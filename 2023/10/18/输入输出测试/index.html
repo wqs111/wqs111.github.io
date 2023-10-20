@@ -4,16 +4,19 @@
   <meta charset="utf-8">
   
   
-  <title>标签: 笔记 | RadiantFlame</title>
+  <title>输入输出测试(API接入实验) | RadiantFlame</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="网页描述">
-<meta property="og:type" content="website">
-<meta property="og:title" content="RadiantFlame">
-<meta property="og:url" content="http://wqs111.github.io/tags/%E7%AC%94%E8%AE%B0/index.html">
+  <meta name="description" content="写一个文本输入框，能换行，并且写入的文字可以被JavaScript语句获取  Clear Text Area    const input &#x3D; document.getElementById(&quot;input&quot;);   function clearTextArea() {     const text &#x3D; input.value;     input.value &#x3D; &quot;&quot;;     console.l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="输入输出测试(API接入实验)">
+<meta property="og:url" content="http://wqs111.github.io/2023/10/18/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%8B%E8%AF%95/index.html">
 <meta property="og:site_name" content="RadiantFlame">
-<meta property="og:description" content="网页描述">
+<meta property="og:description" content="写一个文本输入框，能换行，并且写入的文字可以被JavaScript语句获取  Clear Text Area    const input &#x3D; document.getElementById(&quot;input&quot;);   function clearTextArea() {     const text &#x3D; input.value;     input.value &#x3D; &quot;&quot;;     console.l">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-18T08:25:27.000Z">
+<meta property="article:modified_time" content="2023-10-19T15:28:25.819Z">
 <meta property="article:author" content="Qs Wang">
+<meta property="article:tag" content="测试">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="RadiantFlame" type="application/atom+xml">
@@ -77,58 +80,75 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/10/16/Markdown%E8%AF%AD%E6%B3%95/" class="archive-article-date">
-  <time class="dt-published" datetime="2023-10-16T07:42:03.000Z" itemprop="datePublished">10月 16</time>
+        <section id="main"><article id="post-输入输出测试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/10/18/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%8B%E8%AF%95/" class="article-date">
+  <time class="dt-published" datetime="2023-10-18T08:25:27.000Z" itemprop="datePublished">2023-10-18</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/10/16/Markdown%E8%AF%AD%E6%B3%95/">Markdown格式笔记（基础）</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      输入输出测试(API接入实验)
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/10/16/%E5%8D%9A%E5%AE%A2%E5%A4%9A%E5%AA%92%E4%BD%93%E8%B0%83%E8%AF%95/" class="archive-article-date">
-  <time class="dt-published" datetime="2023-10-16T07:42:03.000Z" itemprop="datePublished">10月 16</time>
-</a>
+    <div class="e-content article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/10/16/%E5%8D%9A%E5%AE%A2%E5%A4%9A%E5%AA%92%E4%BD%93%E8%B0%83%E8%AF%95/">多媒体调试（Markdown进阶）</a>
-    </h1>
-  
+        <p>写一个文本输入框，能换行，并且写入的文字可以被JavaScript语句获取</p>
+<textarea id="input" style="height: 140px; width:300px;"></textarea>
+<p><button onclick="clearTextArea()">Clear Text Area</button></p>
+<script>
+  const input = document.getElementById("input");
+  function clearTextArea() {
+    const text = input.value;
+    input.value = "";
+    console.log(text);
+  }
+</script>
 
-    </header>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://wqs111.github.io/2023/10/18/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%8B%E8%AF%95/" data-id="clnvhyo5a0000uofr5cb04rmi" data-title="输入输出测试(API接入实验)" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag">测试</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/10/20/RTB/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          图片分享
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/10/16/Markdown%E8%AF%AD%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Markdown格式笔记（基础）</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>
