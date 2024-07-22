@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>About VScode C/C++ | RadiantFlame</title><link rel="icon" type="image/x-icon" href="/favicon.ico"><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"copy"}}</script><script src="//unpkg.com/mermaid@10.5.0/dist/mermaid.min.js"></script><script>mermaid.initialize({startOnLoad: false});</script><script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js"></script><script>MathJax.Hub.Config({
+ menuSettings: {
+   zoom: "None"
+ },
+ showMathMenu: false,
+ jax: ["input/TeX","output/CommonHTML"],
+ extensions: ["tex2jax.js"],
+ TeX: {
+   extensions: ["AMSmath.js","AMSsymbols.js"],
+   equationNumbers: {
+     autoNumber: "AMS"
+   }
+ },
+ tex2jax: {
+   inlineMath: [["\\(", "\\)"]],
+   displayMath: [["\\[", "\\]"]]
+ }
+});</script><link type="text/css" rel="stylesheet" href="/lib/encrypt/hbe.style.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lightgallery.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-zoom.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-thumbnail.css"><link type="text/css" rel="stylesheet" href="/lib/fontawesome/css/all.min.css"><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light')
+ document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark')
+ document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
+ font-family: Bender;
+ src: local('Bender'), url("/font/Bender.ttf"), url("/font/Bender.otf");
+}
+@font-face {
+ font-family: BenderLight;
+ src: local('BenderLight'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><style>:root {
+  --dark-background: url('https://ak.hypergryph.com/assets/index/images/ak/pc/bk.jpg');
+  --light-background: url('/img/bk.jpg');
+  --theme-encrypt-confirm: 'confirm'
+}</style><meta name="generator" content="Hexo 6.3.0"></head><body><div class="loading" style="opacity: 0;"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><div class="navBtn"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><nav><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem"><a class="navBlock" href="/about/"><span class="navItemTitle">About</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>About VScode C/C++</h1><div id="post-info"><span>First Post: <div class="control"><time datetime="2024-07-22T07:06:01.000Z" id="date"> 2024-07-22</time></div></span><br><span>Last Update: <div class="control"><time datetime="2024-07-22T08:27:53.508Z" id="updated"> 2024-07-22</time></div></span><br><span>Word Count: <div class="control">1.2k</div></span><br><span>Read Time: <div class="control">4 min</div></span></div></div><hr><div id="post-content"><p>“一杯茶，一包烟，环境变量配一天。”</p>
+<span id="more"></span>
+
+
+
+<h1 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h1><h2 id="什么是环境变量？"><a href="#什么是环境变量？" class="headerlink" title="什么是环境变量？"></a>什么是环境变量？</h2><p>查看环境变量：<br>右键我的电脑（此处为旧时代的叫法，win10&#x2F;11下为“此电脑”）- 属性 - 高级系统设置 - 环境变量</p>
+<p>在这里，你可以看到类似以下结构的目录：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">变量      值<br>PATH      C:\Program Files\Git\mingw64\bin;<br></code></pre></td></tr></table></figure>
+
+<p>环境变量（Environment variable）是指操作系统中一个用来存储特定信息的变量，它可以用于控制程序运行时的行为。它是一个字符串，通常包含一个或多个名称和值对，用于控制程序运行时的行为。</p>
+<p>这谁看了不挠头？简单说，环境变量就是你用命令行运行一个程序时的“桌面”。比方说你在桌面上打开一个记事本，你就在桌面上找到了记事本的图标，点击它，就打开了记事本。</p>
+<p>现在假设你是计算机，你需要打开一个记事本，你就会去环境变量里写明的路径下寻找是否有名为记事本的可执行程序，然后打开它。如果没有找到，你就能看到一个非常熟悉的错误提示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">C:\Users\username&gt;gcc<br>&#x27;gcc&#x27; 不是内部或外部命令，也不是可运行的程序<br>或批处理文件。<br></code></pre></td></tr></table></figure>
+
+<h2 id="如何设置环境变量？"><a href="#如何设置环境变量？" class="headerlink" title="如何设置环境变量？"></a>如何设置环境变量？</h2><p>根据不同的需求，你可以设置系统环境变量，用户环境变量，或者是局部环境变量。较为常见的是向PATH环境变量中添加编译器的路径。以gcc为例，下载gcc包后，解压到某个目录，比如D:\Program Files\gcc，然后在PATH环境变量中将其该文件夹的bin目录添加到PATH变量中，再次打开命令行，输入gcc，你应该能看到gcc相关信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">C:\Users\username&gt;gcc<br>gcc: fatal error: no input files<br>compilation terminated.<br></code></pre></td></tr></table></figure>
+
+
+<h1 id="VS-Code"><a href="#VS-Code" class="headerlink" title="VS Code"></a>VS Code</h1><p>首先，VS code更适合小规模的项目，大型项目建议使用IDE。其次，VS code的插件管理器可以方便地安装各种插件，功能强大有趣。不得不尝。</p>
+<p>假设你已经安装好了VS code，和gcc。你需要安装C&#x2F;C++插件。然后，你就可以新建一个C&#x2F;C++文件，输入代码，保存，编译运行。（注：编译运行C++程序需要调用g++,而非gcc）</p>
+<p>但是别急，为了方便日后方便，我们还需进行一些设置：创建一个较大的文件夹用于管理今后的项目。在此文件夹之内为每个项目创建一个子文件夹，并在其中创建.c或.cpp文件并运行。</p>
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p>VS code的调试功能可以帮助你快速定位代码中的错误。你可以设置断点，单步调试，查看变量值，监视变量变化，但是需要你告诉vs你的调试器（也就是gdb）的路径。</p>
+<p>点击调试按钮（运行+bug的图标）- 选择C++(GDB&#x2F;LLDB)调试器，或在左侧菜单栏选择调试-创建luanch.json文件，进入，右下角添加配置，选择<code>C/C++: (gdb) 启动</code>。然后，在<code>program</code>中输入你的程序的路径,可直接复制<code>task.json</code>中的，在<code>miDebuggerPath</code>中输入你的调试器的路径(即gcc的路径+gdb.exe,并将单反斜杠改为双反斜杠)，点击保存。</p>
+<p>调试功能就设置好了。点击调试按钮，选择调试配置，开始调试。</p>
+<h2 id="其他设置"><a href="#其他设置" class="headerlink" title="其他设置"></a>其他设置</h2><p>除了调试功能，你还可以设置其他一些VS code的功能。比如，你可以设置代码格式化，代码片段，代码自动补全，智能提示等。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Material Icon Theme - 更多的图标<br>Error Lens - 错误提示<br>Code Runner - 运行代码<br>Bracket Pair Colorizer - 匹配括号<br>SQLite Viewer - 数据库查看器<br>Prettier - 代码格式化<br>WSL - 连接Linux子系统<br>WakaTime - 记录编程时间<br></code></pre></td></tr></table></figure>
+
+<p>按住Ctrl+Shift+P，输入<code>settings</code>，选择首选项，然后在搜索框中输入<code>C/C++</code>，找到<code>C_Cpp: Clang_format_fallback</code>项，将其值设置为<code>Disabled</code>，这样，VS code在保存时不会自动格式化代码。</p>
+<p>还有，你可以设置VS code的主题，字体，字号，文件编码等。</p>
+<p>开启自动保存：按住Ctrl+K，然后输入<code>autosave</code>，选择首选项，然后将<code>files.autoSave</code>的值设置为<code>afterDelay</code>，并将<code>files.autoSaveDelay</code>的值设置为<code>5000</code>，这样，VS code会在5秒内自动保存文件。</p>
+<p>其他设置，请自行探索。</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV19c411G7">VS Code C&#x2F;C++环境变量设置</a></li>
+</ol>
+<p>以及长期以来大量分享vscode使用体验优化的视频与文章，不再一一列举。</p>
+<div id="paginator"></div></div><div id="post-footer"><div id="pages" style="justify-content: flex-end"><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2024/07/22/CS106-Recusion/">CS106x-Recusion Prev →</a></div></div></div></div><div class="bottom-btn"><div><a class="i-top" id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧ </a><a class="i-index" id="to-index" href="#toc-div" title="To Catalog">≡</a><a class="i-color" id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Qs Wang</a></h1><div id="description"><p>Me,a fresher in NAU,run the blog.</p></div><div id="social-links"><a class="social" target="_blank" rel="noopener" href="https://github.com/wqs111"><i class="fab fa-github" alt="GitHub"></i></a><a class="social" href="mailto:wqs820626@gmail.com"><i class="fa fa-envelope" alt="E-Mail"></i></a><a class="social" target="_blank" rel="noopener" href="https://space.bilibili.com/107678025"><i class="fa-brands fa-bilibili" alt="BiliBili"></i></a></div></div><div id="aside-block"><div id="toc-div"><h1>Catalog</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">环境变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">什么是环境变量？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">如何设置环境变量？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VS-Code"><span class="toc-number">2.</span> <span class="toc-text">VS Code</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95"><span class="toc-number">2.1.</span> <span class="toc-text">调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E8%AE%BE%E7%BD%AE"><span class="toc-number">2.2.</span> <span class="toc-text">其他设置</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text">参考链接</span></a></li></ol></div></div><footer><nobr><span class="icp-title">copyright</span><a class="icp-content" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a></nobr><br><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr> by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script src="/js/arknights.js"></script><script src="//unpkg.com/lightgallery@2.7.1/lightgallery.min.js"></script><script src="//unpkg.com/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script><script src="//unpkg.com/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/lib/encrypt/hbe.js"></script><script src="/js/pjax.js"></script><script class="pjax-js">reset= () => {document.querySelector('.lg-container')?.remove()
+lightGallery(document.getElementById('post-bg'), {
+  plugins: [lgZoom,lgThumbnail],
+  selector: '.item-img'})}</script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js','data-pjax'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
