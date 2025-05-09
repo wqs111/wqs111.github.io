@@ -1,0 +1,178 @@
+<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MIT 6.S081 OS_Notes | RadiantFlame</title><link rel="icon" type="image/x-icon" href="/favicon.ico"><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"键入以继续","blurHolder":"数据检索","noResult":"无 $0 相关数据"},"code":{"codeInfo":"$0 - $1 行","copy":"复制"}}</script><script src="//unpkg.com/mermaid@10.5.0/dist/mermaid.min.js"></script><script>mermaid.initialize({startOnLoad: false});</script><script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js"></script><script>MathJax.Hub.Config({
+ menuSettings: {
+   zoom: "None"
+ },
+ showMathMenu: false,
+ jax: ["input/TeX","output/CommonHTML"],
+ extensions: ["tex2jax.js"],
+ TeX: {
+   extensions: ["AMSmath.js","AMSsymbols.js"],
+   equationNumbers: {
+     autoNumber: "AMS"
+   }
+ },
+ tex2jax: {
+   inlineMath: [["\\(", "\\)"]],
+   displayMath: [["\\[", "\\]"]]
+ }
+});</script><link type="text/css" rel="stylesheet" href="/lib/encrypt/hbe.style.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lightgallery.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-zoom.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-thumbnail.css"><link type="text/css" rel="stylesheet" href="/lib/fontawesome/css/all.min.css"><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light')
+ document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark')
+ document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
+ font-family: Bender;
+ src: local('Bender'), url("/font/Bender.ttf"), url("/font/Bender.otf");
+}
+@font-face {
+ font-family: BenderLight;
+ src: local('BenderLight'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><style>:root {
+  --dark-background: url('https://ak.hypergryph.com/assets/index/images/ak/pc/bk.jpg');
+  --light-background: url('/img/bk.jpg');
+  --theme-encrypt-confirm: '确认'
+}</style><meta name="generator" content="Hexo 6.3.0"></head><body><div class="loading" style="opacity: 0;"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><div class="navBtn"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><nav><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="数据检索" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem"><a class="navBlock" href="/about/"><span class="navItemTitle">About</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>MIT 6.S081 OS_Notes</h1><div id="post-info"><span>文章发布时间: <div class="control"><time datetime="2025-05-09T07:29:49.000Z" id="date"> 2025-05-09</time></div></span><br><span>最后更新时间: <div class="control"><time datetime="2025-05-09T08:03:24.477Z" id="updated"> 2025-05-09</time></div></span><br><span>文章总字数: <div class="control">6.2k</div></span><br><span>预计阅读时间: <div class="control">22 分钟</div></span></div></div><hr><div id="post-content"><p>课程文字稿见 <a target="_blank" rel="noopener" href="https://mit-public-courses-cn-translatio.gitbook.io/mit6-s081">MIT 6.s081</a></p>
+<span id="more"></span>
+
+<div style="text-align: center;" class='item-img' data-src='https://count.getloli.com/@:Qiuts_OSnotes'><img src="https://count.getloli.com/@:Qiuts_OSnotes" alt="让我看看！">
+</div>
+
+<h2 id="Lec3-10"><a href="#Lec3-10" class="headerlink" title="Lec3 ~ 10"></a>Lec3 ~ 10</h2><p>本文记录Lec3~10的内容。包含虚拟内存，陷入机制和线程锁。文本使用AI润色注意。</p>
+<h3 id="lec3-os-organization-and-syscall（操作系统的组织结构与系统调用）"><a href="#lec3-os-organization-and-syscall（操作系统的组织结构与系统调用）" class="headerlink" title="lec3 os organization and syscall（操作系统的组织结构与系统调用）"></a>lec3 os organization and syscall（操作系统的组织结构与系统调用）</h3><p>操作系统需要对危险操作和普通操作进行隔离，为此设计了两种状态：内核态（Kernel Mode）和用户态（User Mode）。用户态的程序通过系统调用（System Call）进入内核态以完成危险操作。</p>
+<p>假设没有操作系统，程序直接访问硬件，那么将无法实现调度功能，也无法防止恶意程序（例如陷入死循环的程序），此外，内存中的数据将无法得到保护，容易被随意读取或覆盖。因此，操作系统必须实现隔离功能。</p>
+<p>操作系统还应具备防御性，确保自身不会轻易崩溃。简而言之，xv6 操作系统通过内核模式和虚拟内存（Virtual Memory）这两种设计，在硬件层面实现了强大的隔离机制。</p>
+<p>当用户态程序执行了危险操作时，若某个受保护的位（bit）标记当前状态（0 表示内核态，1 表示用户态），操作系统将介入并杀死该程序。除了用户态和内核态外，RISC-V 架构还有一个机器模式（Machine Mode），用于启动机器。用户态程序只能通过系统调用进入内核态，而系统调用会触发软中断（Software Interrupt），通过查询中断表进而运行对应的中断处理程序，从而实现从用户态（1）到内核态（0）的切换。</p>
+<p>实际上，ecall 指令接收一个数字，该数字代表用户想要调用的系统调用编号，进而执行相应的操作。所有的系统调用都从这里进入内核。</p>
+<p>此外，通过硬件定时器，每隔一段时间就会将控制权从用户程序切换到操作系统，以便进行 CPU 调度等操作。</p>
+<h4 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h4><p>每个应用程序都应只能看到自身内部的数据。通过使用页表（Page Table）对每个程序的内存进行管理，每个程序都有自己的页表，并且它们都从地址 0 开始，或许能增长到 MAXVA（最大虚拟地址）。</p>
+<p>xv6 采用宏内核（Monolithic Kernel）设计。</p>
+<h4 id="xv6-源码"><a href="#xv6-源码" class="headerlink" title="xv6 源码"></a>xv6 源码</h4><p>xv6 源码包含三个部分：kernel（内核）、user（用户态程序）、mkfs（用于创建一个空文件系统）。编译过程如下：使用 gcc 将 *.c 文件编译为 *.asm 文件，然后通过汇编器将 *.asm 文件编译为 *.o 文件，最后由链接器（Loader）收集所有 *.o 文件并链接生成内核文件，该文件可在 QEMU 中运行。</p>
+<h4 id="gdb-调试"><a href="#gdb-调试" class="headerlink" title="gdb 调试"></a>gdb 调试</h4><p>可以使用 <code>make CPUS=1 qemu-gdb</code> 启动 QEMU 内的 gdb 服务器，在另一个终端启动 gdb 客户端并连接（<code>gdb-multiarch -x .gdbinit</code>，但不同环境下的效果可能有所不同）。xv6 的启动地址为 0x80000000，在此地址加载内核。文件 kernel.ld 定义了内核的加载方式。xv6 从 entry.s 开始启动，此时没有内存分页，也没有隔离性，并且运行在机器模式（M-mode）。xv6 会尽快跳转到内核模式（Kernel Mode）或监督模式（Supervisor Mode）。我们可以在 main 函数处设置断点，main 函数已经运行在监督模式下了。为了同时查看源码与汇编代码，在 gdb 中输入 <code>layout split</code>。</p>
+<p>main() 函数进行了一系列初始化操作：</p>
+<ul>
+<li><strong>kinit</strong> ：设置好页表分配器（Page Allocator）。</li>
+<li><strong>kvminit</strong> ：设置好虚拟内存，这部分内容将在下节课详细介绍。</li>
+<li><strong>kvminithart</strong> ：打开页表，相关内容也将在下节课讲解。</li>
+<li><strong>processinit</strong> ：设置好初始进程，或者说设置好进程列表。</li>
+<li><strong>trapinit</strong>&#x2F;<strong>trapinithart</strong> ：设置好用户态与内核态之间的转换代码。</li>
+<li><strong>plicinit</strong>&#x2F;<strong>plicinithart</strong> ：设置好中断控制器（PLIC，Platform Level Interrupt Controller），我们将在后续介绍中断时详细讲解这一部分，它是我们与磁盘和控制台进行交互的方式。</li>
+<li><strong>binit</strong> ：分配缓冲区缓存（Buffer Cache）。</li>
+<li><strong>iinit</strong> ：初始化 inode 缓存。</li>
+<li><strong>fileinit</strong> ：初始化文件系统。</li>
+<li><strong>virtio_disk_init</strong> ：初始化磁盘。</li>
+<li><strong>userinit</strong> ：当所有设置都完成后，操作系统开始运行，并通过 userinit 函数启动第一个进程。接下来，我们具体看一下 userinit 函数的操作。</li>
+</ul>
+<p>在 gdb 中输入 <code>s</code> 进入 userinit 函数内部。第一个用户程序将负责与内核交互，其定义在 initcode 中，对应的含义可以在 <code>initcode.S</code> 文件中查阅。简单来说，该程序相当于执行 <code>exec(init, argv)</code> 操作，其中的 <code>li a7, SYS_exec</code> 将 exec 系统调用号（位于 syscall.h 文件中）传入 a7 寄存器，等待系统调用执行。</p>
+<p>查看 init 程序，它配置好了控制台（console），调用了 fork 函数，并在子进程中通过 <code>exec(&quot;sh&quot;, argv)</code> 启动 shell。</p>
+<h3 id="lec4-page-tables（页表）"><a href="#lec4-page-tables（页表）" class="headerlink" title="lec4 page tables（页表）"></a>lec4 page tables（页表）</h3><p>每个程序所能看到的内存都从地址 0 开始，无论进行何种读写操作，都只能修改自身拥有的内存。然而，物理内存实际上是有限的，而虚拟内存近乎无限。操作系统需要能够优雅地处理物理内存耗尽的情况。最灵活的方法就是使用页表。</p>
+<p>对于任何带有地址的指令，都应将其地址解释为虚拟地址（VA，Virtual Address），通过硬件内存管理单元（MMU，Memory Management Unit）将其翻译为物理地址（PA，Physical Address），然后再去内存中访问数据。通常，内存中的某个地址会存储 VA-PA 的对应关系，该地址会被保存在 SATP 寄存器（Supervisor Address Translation and Protection Register）中。当程序切换时，SATP 也会一同切换。</p>
+<p>已知 VA 和 PA 是一一对应的，假设寄存器为 64 位，那么 VA 的数量可达 2^64 个，内存将因存储如此多的对应关系而耗尽（2^10 &#x3D; 1Gb）。因此，并不是为每个 VA 都记录一条 PA，而是将多个 VA 集合成一个页（Page），一个页的大小为 4096B。即每 4096 个地址空间为 1 页，页内偏移（Offset）可以用 12 位二进制数表示。页表则只记录每个页的起始位置。</p>
+<p>在 RISC-V 架构中，寄存器虽然是 64 位的，但实际上地址只使用了低 39 位，因此，虚拟内存空间大约是 2^39&#x3D;512GB。一个 VA 的低 12 位用于表示页内偏移量（2^12 &#x3D; 4096），中间 27 位用于页表索引（Index）。PA 则使用 56 位，这 56 位中的高 44 位是物理页号（PPN，Physical Page Number），剩下的 12 位将与 VA 的 offset 组合，完成最终的寻址。</p>
+<p>即使有了这样的页表，单个程序仍需要存储 2^27 个条目，这是不可接受的。因此，我们并不采用这种单一的页表结构，而是将页表设计为一个多级结构，每 9bit 用于对下级页表进行索引。</p>
+<p>索引流程如下：收到一个 VA 后，将其按 9bit 分割为 L2、L1、L0 和 12bit 的 offset。SATP 寄存器指向一个二级页表（Page Directory），在其中根据 L2 索引找到对应的 PPN，此 PPN 指向下一级页表的位置；在下一级页表中根据 L1 索引找到对应的 PPN，该 PPN 指向下一级页表的地址；再根据 L0 索引找到最终的 PPN，将此 PPN 与 VA 的 offset 拼接，得到正确的 PA。</p>
+<p>页目录（Page Directory）中的值并非单纯的 PPN，而是一个复合的 64bit 条目，称为页表项（PTE，Page Table Entry）。PTE 的结构如下：PTE &#x3D; EXT（可扩展区域） + PPN + FLAGs（标志位）。下图展示了 PTE 低 10 位的 flag 功能，例如 Access、Global、User、Executable、Readable、Valid。当 VA 的 index 查询到写标记为非法时，说明该 VA 不可写。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 页表项结构示意</span><br>| <span class="hljs-number">63</span>      <span class="hljs-number">54</span> | <span class="hljs-number">53</span>        <span class="hljs-number">28</span> | <span class="hljs-number">27</span>        <span class="hljs-number">19</span> | <span class="hljs-number">18</span>        <span class="hljs-number">10</span> | <span class="hljs-number">9</span>  |<span class="hljs-number">8</span>|<span class="hljs-number">7</span>|<span class="hljs-number">6</span>|<span class="hljs-number">5</span>|<span class="hljs-number">4</span>|<span class="hljs-number">3</span>|<span class="hljs-number">2</span>|<span class="hljs-number">1</span>|<span class="hljs-number">0</span>|<br>| <span class="hljs-title class_">Reserved</span>   |   <span class="hljs-variable constant_">PPN</span>[<span class="hljs-number">2</span>]     |   <span class="hljs-variable constant_">PPN</span>[<span class="hljs-number">1</span>]     |   <span class="hljs-variable constant_">PPN</span>[<span class="hljs-number">0</span>]     |保留|D|A|G|U|X|W|R|V|<br></code></pre></td></tr></table></figure>
+
+<p>为什么要采用这样的三级索引结构呢？它通过只在需要时才分配物理页，从而降低了内存占用。</p>
+<p>页表缓存（TLB，Translation Lookaside Buffer）可以省去三次寻址的时间，直接从 VA 得到 PA。切换程序时，TLB 会一同改变。在 RISCV 中，清空 TLB 的指令是 <code>sfence_vma</code>。xv6 中的 walk 函数实现了类似 MMU 硬件的功能。</p>
+<h4 id="内核页表"><a href="#内核页表" class="headerlink" title="内核页表"></a>内核页表</h4><p>首先看一下 VA 中的内核页表分布：从 0x0 到 0x8000 0000-1 是 IO 设备，内核从 KERNBASE（0x8000 0000，由硬件决定）开始，到 PHYSTOP 结束。PA 的理论最大值为 2^56-1，但实际的硬件可能没有搭载那么多 DRAM 内存，所以高于 PHYSTOP 的 PA 实际上被标记为未使用（Unused）。</p>
+<p>VA 和 PA 稍有不同，PHYHTSTOP 以上的地址到最高位 MAXVA 间的地址通过映射放到物理内存中。这里有 Trampoline（跳板）、guardpage（隔离保护页，其 valid 标记为非法，当 stack 的 VA 溢出至此时会触发 page fault，物理内存上不会为其分配内存）、Kstack0（0 号内核栈）、guardpage、Kstack1 等。</p>
+<p>对于教学用的 xv6，IO、KERNBASE、PHYSTOP 都采用了直接映射，即 VA 等于 PA。同时，页表记录了各个位置内存的权限，如 RWX 等。例如，kernel data 段的权限为 RW，不可执行，以防止代码伪装成数据被执行。</p>
+<p>每个用户进程都有自己的内核栈。</p>
+<h3 id="Lec5"><a href="#Lec5" class="headerlink" title="Lec5"></a>Lec5</h3><p>请阅读 RISCV-calling.pdf 文档。</p>
+<h4 id="RISC-V-寄存器"><a href="#RISC-V-寄存器" class="headerlink" title="RISC-V 寄存器"></a>RISC-V 寄存器</h4><p>在实践编程中，通常使用 ABI（Application Binary Interface，应用程序二进制接口）名称。例如：ra（return address，返回地址）、sp（stack pointer，栈指针）、gp（global pointer，全局指针）、tp（thread pointer，线程指针）。</p>
+<p>a0-a7 是专用参数寄存器，超出的参数必须通过内存传递。单个返回值使用 a0。</p>
+<p>caller saved（调用者保存）的寄存器可能会被覆盖。例如，ra 寄存器属于 caller saved 类型。当 funcA 调用 funcB 时，ra 的值会被覆盖为 funcA 的地址。</p>
+<h4 id="栈（Stack）"><a href="#栈（Stack）" class="headerlink" title="栈（Stack）"></a>栈（Stack）</h4><p>栈是重要的概念，但相关内容可能更偏向计算机组成原理课程。</p>
+<h4 id="结构体（Struct）"><a href="#结构体（Struct）" class="headerlink" title="结构体（Struct）"></a>结构体（Struct）</h4><p>结构体在内存中是一段连续的地址，类似于一个由不同数据类型组成的数组。在 gdb 下，可以使用 <code>p *structName</code> 的方式打印出结构体的具体内容。</p>
+<h3 id="Lec6-Trap（异常）"><a href="#Lec6-Trap（异常）" class="headerlink" title="Lec6 Trap（异常）"></a>Lec6 Trap（异常）</h3><p>请阅读第 4 章（除了 4.6 节）；阅读 RISC-V.h；阅读 trampoline.S；阅读 trap.c</p>
+<p>触发系统调用（syscall）、引发内核恐慌（panic，如除零错误、page fault 等），或者设备触发中断，都会通过 trap 机制陷入内核，从而实现用户态与内核态之间的转换。</p>
+<p>在转换过程中，需要保存正在执行的用户进程的 32 个寄存器状态，然后切换到内核的数值。以下是一些关键寄存器：</p>
+<ul>
+<li><strong>硬件寄存器</strong> ：程序计数器（PC，Program Counter Register）。</li>
+<li><strong>模式标志位（Mode Flag）</strong> ：该标志位表明当前是监督模式（supervisor mode）还是用户模式（user mode）。</li>
+<li><strong>控制 CPU 工作方式的寄存器</strong> ：例如 SATP（Supervisor Address Translation and Protection）寄存器，它指向 page table 的物理内存地址（详见 4.3 节）。</li>
+<li><strong>STVEC（Supervisor Trap Vector Base Address Register）</strong> ：该寄存器指向内核中处理 trap 的指令的起始地址。</li>
+<li><strong>SEPC（Supervisor Exception Program Counter）</strong> ：在 trap 过程中，该寄存器保存程序计数器的值。</li>
+<li><strong>SSRATCH（Supervisor Scratch Register）</strong> ：这也是一个非常重要的寄存器（详见 6.5 节）。</li>
+</ul>
+<p>在 trap 刚开始时，我们仍处于用户态，需要保存用户寄存器状态、PC 值，切换到内核态，修改 SATP 寄存器从指向用户页表变为指向内核页表，并将栈指针寄存器切换到内核的某个地址（以便稍后在内核中运行 C 程序）。完成上述操作后，进入内核。</p>
+<p>出于隔离性和安全性的考虑，我们不能信任用户的数据和指令。因此，XV6 的 trap 机制不会依赖这 32 个寄存器，而是将它们全部保存起来，以确保用户态的寄存器状态不会对内核造成不可预测的影响。</p>
+<p>模式寄存器（Mode Register）用于表明当前是用户态还是内核态。</p>
+<p>当调用 write() 函数时，汇编代码会调用 ECALL 指令切换到内核。内核执行的第一个指令来自 <code>trampoline.S</code> 文件中的 <code>uservec</code>，然后转入 <code>usertrap()</code> 函数（位于 trap.c 文件中）。</p>
+<p>调用链如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c">ECALL-&gt;uservec <span class="hljs-meta"># trampoline.asm -&gt; trap.c</span><br>-&gt;<br>usertrap() &#123;<br>    syscall() &#123;<br>        sys_write() &#123;<br>            <span class="hljs-keyword">return</span><br>        &#125;<br>        usertrapret() &#123;<br>            userret <span class="hljs-meta"># trap.c -&gt; trampoline.asm</span><br>            <span class="hljs-comment">// 至此返回用户态</span><br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在 Lec6 中，从 6.3 节开始介绍 gdb 的启动方法。</p>
+<p>ECALL 指令不会切换页表，因此第一个内核代码将在用户页表中执行。也就是说，它会映射到 trampoline page，而 STVEC 寄存器会指向那里。</p>
+<p>ECALL 作为一条 CPU 指令，主要完成了以下三件事：</p>
+<ol>
+<li>从用户模式切换到监督模式（内核模式）。</li>
+<li>将用户程序的 PC 值存入 SEPC 寄存器。</li>
+<li>跳转到 STVEC 寄存器所指向的指令地址。</li>
+</ol>
+<p>在 RISC-V 架构中，ECALL 指令的设计尽量减少了不必要的操作，仅完成了上述必要的工作。</p>
+<p>在调用链中，程序现在位于 trampoline 的 <code>uservec()</code> 起点。</p>
+<p>当机器进入内核态时，页表仍然是用户页表，这显得有些尴尬。为了能够顺利找到内核地址，我们预先为每个用户页表添加了一个固定的跳板（trapframe page）。trapframe page 的地址会被存入 sscratch 寄存器。然后，sscratch 寄存器与 a0 寄存器交换值，以保护 a0 的原始值。根据 trapframe 内进程 proc 记录的内核地址进入内核，并将该地址加载到 SATP 寄存器中，从而进入 <code>usertrap</code> 函数执行内核代码。</p>
+<p>在进入 <code>usertrap</code> 后，STVEC 寄存器指向 kernelvec（内核 trap 处理程序）。SCAUSE 寄存器会记录触发 trap 的系统调用号。在检查进程是否被杀死后，若进程未被杀死，则执行系统调用。系统调用执行完毕后，应使程序继续执行下一条指令，即 PC + 4 的位置。需要注意的是，中断在 trap 过程中会被关闭。对于一些耗时较长的系统调用，我们需要显式地打开中断，然后进入 <code>syscall()</code> 函数，读取 trapframe-&gt;a7 作为系统调用号，a0、a1、a2 作为参数。完成系统调用后，将返回值存入 a0 寄存器，最后调用 <code>usertrapret</code> 函数返回用户态。</p>
+<h3 id="Lec7-Q-A-for-lab（实验室答疑）"><a href="#Lec7-Q-A-for-lab（实验室答疑）" class="headerlink" title="Lec7 Q&amp;A for lab（实验室答疑）"></a>Lec7 Q&amp;A for lab（实验室答疑）</h3><p>Pass</p>
+<h3 id="Lec8-Page-Fault（缺页异常）"><a href="#Lec8-Page-Fault（缺页异常）" class="headerlink" title="Lec8 Page Fault（缺页异常）"></a>Lec8 Page Fault（缺页异常）</h3><p>XV6 将 page fault 功能的实现留作实验室任务。</p>
+<p>当触发缺页异常时，需要以下三个重要信息：</p>
+<ol>
+<li>触发时的地址（需要为其分配内存）。</li>
+<li>触发的原因（SCAUSE 值，例如是 load 操作还是 store 操作）。</li>
+<li>触发的指令的地址（用于恢复指令执行）。</li>
+</ol>
+<p>来看一下 <code>sbrk(int k)</code> 这个系统调用。它将扩展堆（heap）的大小（p-&gt;sz）为 k 字节（若接收负数，则压缩堆）。XV6 采用的 sbrk 设计是立即分配 k 字节内存。然而，程序往往倾向于申请更多的内存，这存在浪费现象。因此，我们考虑采用延迟分配（lazy allocation）的方式。</p>
+<p>当调用 sbrk 时，仅修改 p-&gt;sz 的值，而不立即分配物理内存。这样，程序可以访问大于 sz 的地址空间，但那些地址对应的物理内存仍然是无效的（invalid），因此会抛出缺页异常。此时，调用缺页处理程序为其分配内存（kalloc），完成后重新执行该处指令。</p>
+<p>不过，延迟分配也存在问题。当物理内存实际已满载时，再增加 p-&gt;sz 的值也毫无意义，此时实际的操作系统很可能会杀死该进程。</p>
+<p>以下是一个实际的例子：将 <code>sys_sbrk()</code> 中分配内存的代码注释掉，仅修改 p-&gt;sz 的值。当使用 shell 执行 echo 命令时，会得到一个 not mapped panic 错误。这是因为 shell 在子进程中执行 exec 时会为其申请内存，从而触发了错误。出错时，XV6 会输出 scause（错误原因）、pid（进程 ID）、sepc（异常发生时的程序计数器值）、stval（触发异常的指令中的虚拟地址）等信息。其中，scause 的值为 15，表示 store page fault（存储页错误）。</p>
+<p>查看 trap.c 文件，在 Lec6 中，我们因 scause &#x3D;&#x3D; 8 而进入 trap 处理。现在，若 scause 不等于 8，则检查是否有设备中断，若无则杀死进程。我们需要添加一个 scause &#x3D;&#x3D; 15 的情况。如果 sz &gt; stval，则说明应该为该地址分配物理内存。需要注意的是，unmap 操作会试图释放 sz 中的所有内存，即使某些内存尚未实际分配，这会导致 not mapped panic 错误。为此，可以将 unmap 的 panic 改为 continue，以跳过错误处理。</p>
+<p>对于未初始化和初始化为零的变量，它们会被映射到一个全零的页。该页可读但不可写。当程序使用这些变量时，会将其重新映射为可读可写的页表项（PTE），并指向新的物理页。</p>
+<p>写时复制（copy-on-write）是操作系统中常见的优化方法。当 fork 一个子进程时，父子进程均指向相同的内存，但这些内存区域被标记为只读。一旦子进程试图写入这些内存区域，就会触发 page fault，进而触发分页操作，为子进程分配新的物理页。那么，当程序结束时，如何判断是否可以安全释放某块物理内存呢？可以采用类似文件系统中 unlink 的 “引用计数” 方法：每次释放一个虚拟页时，将其对应的物理页的引用计数减一。当引用计数为零时，才释放该物理页。</p>
+<p>接下来介绍 “按需分页”（Demand Paging）：操作系统仅为 text 和 data 分配好地址段（并标记某些区域可以读取），但并不立即分配实际的物理内存。只有当访问这些地址触发缺页异常时，才为其分配物理内存。如果内存已满，需要丢弃一些页。如何选择要丢弃的页呢？</p>
+<p>这里有一个比喻：内存就像一个大餐盘，供人们取用披萨。不断有新的披萨饼上桌，多余的披萨需要被处理掉。优先处理掉那些最久没有人吃过的披萨，以及那些没有被加过料的披萨。因为加料比制作空披萨更费时间。</p>
+<p>优先释放未被写过的页和长时间未被访问的页。可以通过定期（例如每 100ms）将访问位（access bit）清零，并利用 dirty bit（脏位）进行参考。</p>
+<p>Memory mapped files（内存映射文件）：将文件内容读入内存，修改后的数据在 unmap 时写回磁盘。</p>
+<h3 id="Lec9-Interrupt（中断）"><a href="#Lec9-Interrupt（中断）" class="headerlink" title="Lec9 Interrupt（中断）"></a>Lec9 Interrupt（中断）</h3><p>请阅读第五章，以及 <code>kernel/kernelvec.s</code>、<code>plic.c</code>、<code>console.c</code>、<code>uart.c</code>、<code>printf.c</code> 等文件。</p>
+<p>如果你使用 <code>top</code> 命令查看，会发现程序本身占用的内存其实并不多。但我们不希望内存过于空闲，因此会将大量的缓冲区（buffer）和缓存（cache）填充到内存中。VIRT 表示虚拟地址空间的大小，而 RES 表示实际使用的内存数量，通常 RES 远小于 VIRT。</p>
+<p>当中断发生时，例如网卡接收到数据包（package）或者键盘接收到输入，会触发中断，交由操作系统处理。需要注意的是，中断的发生可能与当前正在运行的 CPU 进程没有任何关联，它是异步的。CPU 和触发中断的设备是并行工作的，需要通过编程进行处理。网卡、键盘、UART（通用异步收发器，用于收发数据的硬件）等设备发起的中断会通过 PLIC（Platform Level Interrupt Controller，平台级中断控制器）发送到 CPU。</p>
+<p>看一下 console 中的 <code>$</code> 提示符，以及 ls 命令的输出是如何显示出来的。</p>
+<p>查看 uart.c 文件，管理设备的代码称为驱动（Driver），存放在内核中。大部分驱动分为 top 和 bottom 两端：bottom 部分基本是中断处理程序，被 CPU 调用；top 部分向用户提供更高级别的调用接口。</p>
+<p>例如，将数据写入设备的缓冲区，用户通过 top 部分的 read 函数读取数据。就像管道的两端。缓冲区及其对应的地址被映射在内存中，以便于读取，这种方式称为内存映射 I&#x2F;O（Memory-mapped I&#x2F;O）。</p>
+<p>设备将字符传给 uart 设备，经过其内部寄存器后，通过中断发送到 console。键盘的工作原理类似。uart 会将 bit 数据合并成 Byte，然后触发中断发送到处理器。这个过程需要一些硬件的配合。</p>
+<p>以下是与中断处理相关的寄存器：</p>
+<ul>
+<li><strong>SIE（Supervisor Interrupt Enable）</strong> ：有专门的位记录硬件中断、软件中断和定时器中断是否被使能。</li>
+<li><strong>sstatus</strong> ：记录是否开启中断。</li>
+<li><strong>sip（Supervisor Interrupt Pending）</strong> ：中断发生时，处理器通过此寄存器获取当前中断的类型。</li>
+<li><strong>stvec</strong> ：保存进程 trap 和中断发生时的向量地址，中断处理结束后恢复进程。</li>
+</ul>
+<p>查看 start.c 文件。</p>
+<h3 id="Lec10-多线程和锁"><a href="#Lec10-多线程和锁" class="headerlink" title="Lec10 多线程和锁"></a>Lec10 多线程和锁</h3><p>单 CPU 的性能增长趋势逐渐放缓，因此通过使用多核来增强系统的整体性能。然而，当多个 CPU 同时试图读取同一个地址时，可能会出现读取到错误数据的情况。因此，需要使用锁（Lock）对关键数据进行保护。当一个 CPU 锁定某个数据时，其他 CPU 不能对该数据进行操作，从而避免出现竞态条件（Race Condition）。</p>
+<p>通过 <code>acquire</code> 和 <code>release</code> 函数来获取或释放一个锁。上锁操作必须是一个原子（Atomic）指令，不可被分割。也就是说，一旦 acquire 操作开始执行，那么在被打断前一定会执行完毕。</p>
+<p>被锁保护的代码区域称为 “临界区”（Critical Section）。临界区的特性是：要么完整执行，要么完全不执行，不会被其他 CPU 打断或交错执行。</p>
+<p>操作系统通常会使用多把锁而不是一把大锁。这是因为如果使用一把大锁，那么所有系统调用都得排队执行，完全没有并行性可言。而多把锁可以让不同的系统调用能够同时执行，从而提高系统的整体效率。程序员必须自行决定哪些数据结构需要锁保护，以及在代码的什么位置进行加锁和解锁操作。</p>
+<p>那么，什么时候应该使用锁呢？一般来说，当两个进程需要访问同一个数据，并且其中有一个进程要修改该数据时，就需要使用锁。然而，这个规则有些宽松。例如，printf 函数虽然没有共享数据，但也需要加锁，否则输出的内容可能会交错混合。在某些情况下，可以通过无锁编程（Lock-free Programming）来提高性能。</p>
+<p>不当使用锁可能会引发一些令人头疼的问题，例如死锁。例如，进程 A 先获取锁 d1，然后尝试获取锁 d2；而进程 B 先获取锁 d2，然后尝试获取锁 d1。这可能导致 A 和 B 互相等待对方释放锁，从而陷入死锁。</p>
+<p><del>解锁一下B  你必须先解除A才能解除B   我得先解B才能解除A！   你必须先解除A才能解除B！！</del></p>
+<p>一种避免死锁的方法是为所有的锁编号并排序。例如，规定 CPU 执行操作时必须按照锁的编号顺序依次获取锁。这样可以避免死锁的发生。</p>
+<h2 id="一些剧透"><a href="#一些剧透" class="headerlink" title="一些剧透"></a>一些剧透</h2><h3 id="lec14-15-16-文件系统"><a href="#lec14-15-16-文件系统" class="headerlink" title="lec14 15 16 文件系统"></a>lec14 15 16 文件系统</h3><h3 id="Lec18-微内核"><a href="#Lec18-微内核" class="headerlink" title="Lec18 微内核"></a>Lec18 微内核</h3><h3 id="Lec19-虚拟机"><a href="#Lec19-虚拟机" class="headerlink" title="Lec19 虚拟机"></a>Lec19 虚拟机</h3><h3 id="Lec20-使用高级语言实现-OS"><a href="#Lec20-使用高级语言实现-OS" class="headerlink" title="Lec20 使用高级语言实现 OS"></a>Lec20 使用高级语言实现 OS</h3><h3 id="Lec21-网络"><a href="#Lec21-网络" class="headerlink" title="Lec21 网络"></a>Lec21 网络</h3><div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2025/05/09/%E4%BA%92%E8%81%94%E7%BD%91%E6%96%87%E6%91%98202505/">← 下一篇 互联网文摘202505</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2025/04/26/alg-learn/">Algorithm_learn 上一篇 →</a></div></div></div></div><div class="bottom-btn"><div><a class="i-top" id="to-top" onClick="scrolls.scrolltop();" title="回到顶部" style="opacity: 0; display: none;">∧ </a><a class="i-index" id="to-index" href="#toc-div" title="文章目录">≡</a><a class="i-color" id="color-mode" onClick="colorMode.change()" title="切换主题"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Quits Wang</a></h1><div id="description"><p>Die Luft der Freiheit weht.</p></div><div id="social-links"><a class="social" target="_blank" rel="noopener" href="https://github.com/wqs111"><i class="fab fa-github" alt="GitHub"></i></a><a class="social" href="mailto:wqs820626@gmail.com"><i class="fa fa-envelope" alt="E-Mail"></i></a><a class="social" target="_blank" rel="noopener" href="https://space.bilibili.com/107678025"><i class="fa-brands fa-bilibili" alt="BiliBili"></i></a></div></div><div id="aside-block"><div id="toc-div"><h1>目录</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lec3-10"><span class="toc-number">1.</span> <span class="toc-text">Lec3 ~ 10</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#lec3-os-organization-and-syscall%EF%BC%88%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84%E4%B8%8E%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">lec3 os organization and syscall（操作系统的组织结构与系统调用）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-number">1.1.1.</span> <span class="toc-text">虚拟内存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#xv6-%E6%BA%90%E7%A0%81"><span class="toc-number">1.1.2.</span> <span class="toc-text">xv6 源码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#gdb-%E8%B0%83%E8%AF%95"><span class="toc-number">1.1.3.</span> <span class="toc-text">gdb 调试</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lec4-page-tables%EF%BC%88%E9%A1%B5%E8%A1%A8%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">lec4 page tables（页表）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E9%A1%B5%E8%A1%A8"><span class="toc-number">1.2.1.</span> <span class="toc-text">内核页表</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lec5"><span class="toc-number">1.3.</span> <span class="toc-text">Lec5</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RISC-V-%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.3.1.</span> <span class="toc-text">RISC-V 寄存器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%88%EF%BC%88Stack%EF%BC%89"><span class="toc-number">1.3.2.</span> <span class="toc-text">栈（Stack）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%88Struct%EF%BC%89"><span class="toc-number">1.3.3.</span> <span class="toc-text">结构体（Struct）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lec6-Trap%EF%BC%88%E5%BC%82%E5%B8%B8%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">Lec6 Trap（异常）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lec7-Q-A-for-lab%EF%BC%88%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AD%94%E7%96%91%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">Lec7 Q&amp;A for lab（实验室答疑）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lec8-Page-Fault%EF%BC%88%E7%BC%BA%E9%A1%B5%E5%BC%82%E5%B8%B8%EF%BC%89"><span class="toc-number">1.6.</span> <span class="toc-text">Lec8 Page Fault（缺页异常）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lec9-Interrupt%EF%BC%88%E4%B8%AD%E6%96%AD%EF%BC%89"><span class="toc-number">1.7.</span> <span class="toc-text">Lec9 Interrupt（中断）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lec10-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E9%94%81"><span class="toc-number">1.8.</span> <span class="toc-text">Lec10 多线程和锁</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%89%A7%E9%80%8F"><span class="toc-number">2.</span> <span class="toc-text">一些剧透</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#lec14-15-16-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.1.</span> <span class="toc-text">lec14 15 16 文件系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lec18-%E5%BE%AE%E5%86%85%E6%A0%B8"><span class="toc-number">2.2.</span> <span class="toc-text">Lec18 微内核</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lec19-%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="toc-number">2.3.</span> <span class="toc-text">Lec19 虚拟机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lec20-%E4%BD%BF%E7%94%A8%E9%AB%98%E7%BA%A7%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0-OS"><span class="toc-number">2.4.</span> <span class="toc-text">Lec20 使用高级语言实现 OS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lec21-%E7%BD%91%E7%BB%9C"><span class="toc-number">2.5.</span> <span class="toc-text">Lec21 网络</span></a></li></ol></li></ol></div></div><footer><nobr><span class="icp-title">copyright</span><a class="icp-content" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a></nobr><br><nobr>构建自 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> 使用主题 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr> 主题作者 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script src="/js/arknights.js"></script><script src="//unpkg.com/lightgallery@2.7.1/lightgallery.min.js"></script><script src="//unpkg.com/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script><script src="//unpkg.com/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/lib/encrypt/hbe.js"></script><script src="/js/pjax.js"></script><script class="pjax-js">reset= () => {document.querySelector('.lg-container')?.remove()
+lightGallery(document.getElementById('post-bg'), {
+  plugins: [lgZoom,lgThumbnail],
+  selector: '.item-img'})}</script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js','data-pjax'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
